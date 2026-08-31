@@ -2,6 +2,7 @@ import React from 'react';
 import { db } from '@/lib/db';
 import { Hero } from '@/components/public/Hero';
 import { MacBookMockup } from '@/components/macbook/MacBookMockup';
+import { VisitorModeBanner } from '@/components/public/VisitorModeBanner';
 import { HowItWorks } from '@/components/public/HowItWorks';
 import { SlotsGrid } from '@/components/public/SlotsGrid';
 import { PricingSection } from '@/components/public/PricingSection';
@@ -177,7 +178,10 @@ export default async function HomePage() {
       {/* 1. Hero Section */}
       <Hero />
 
-      {/* 2. Interactive MacBook Display Centerpiece */}
+      {/* 2. Mobile Visitor Mode Intent Banner */}
+      <VisitorModeBanner />
+
+      {/* 3. Interactive MacBook Showcase Centerpiece */}
       <section id="macbook-display" className="scroll-mt-20">
         <div className="text-center max-w-2xl mx-auto px-4 mb-4">
           <span className="text-xs font-bold uppercase tracking-widest text-blue-400">Interactive Visual Showcase</span>
@@ -187,22 +191,22 @@ export default async function HomePage() {
         <MacBookMockup slots={slots} />
       </section>
 
-      {/* 3. How It Works */}
+      {/* 4. How It Works */}
       <HowItWorks />
 
-      {/* 4. Complete Inventory Grid (Mobile + Desktop Cards) */}
+      {/* 5. Complete Inventory Grid (Mobile + Desktop Cards) */}
       <SlotsGrid slots={slots} />
 
-      {/* 5. Pricing & Duration Discounts */}
+      {/* 6. Pricing & Duration Discounts */}
       <PricingSection />
 
-      {/* 6. Why Advertise Here */}
+      {/* 7. Why Advertise Here */}
       <WhyAdvertise />
 
-      {/* 7. FAQ */}
+      {/* 8. FAQ */}
       <FAQ />
 
-      {/* 8. Final CTA Banner */}
+      {/* 9. Final CTA Banner */}
       <section className="max-w-5xl mx-auto px-4">
         <div className="p-10 rounded-3xl bg-gradient-to-r from-blue-900/40 via-indigo-900/30 to-purple-900/40 border border-blue-500/30 text-center space-y-6 relative overflow-hidden shadow-2xl">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/20 text-blue-300 text-xs font-semibold">

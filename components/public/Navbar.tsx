@@ -34,7 +34,7 @@ export function Navbar() {
             How It Works
           </a>
           <a href="#spots-inventory" className="hover:text-white transition-colors">
-            Inventory &amp; Pricing
+            Available Spots
           </a>
           <a href="#faq" className="hover:text-white transition-colors">
             FAQ
@@ -71,7 +71,7 @@ export function Navbar() {
         </div>
       </div>
 
-      {/* Mobile Drawer Overlay */}
+      {/* Mobile Drawer Overlay (Discovery Links Only) */}
       {mobileMenuOpen && (
         <div className="md:hidden border-b border-gray-800 bg-gray-950 p-4 space-y-4 animate-in slide-in-from-top duration-200">
           <nav className="flex flex-col space-y-3 text-xs font-semibold text-gray-300">
@@ -80,7 +80,7 @@ export function Navbar() {
               onClick={() => setMobileMenuOpen(false)}
               className="px-3 py-2 rounded-lg hover:bg-gray-900 hover:text-white"
             >
-              Interactive MacBook
+              Explore MacBook Lid
             </a>
             <a
               href="#how-it-works"
@@ -94,7 +94,7 @@ export function Navbar() {
               onClick={() => setMobileMenuOpen(false)}
               className="px-3 py-2 rounded-lg hover:bg-gray-900 hover:text-white"
             >
-              Inventory &amp; Pricing
+              Available Spots
             </a>
             <a
               href="#faq"
@@ -111,15 +111,8 @@ export function Navbar() {
               onClick={() => setMobileMenuOpen(false)}
               className="flex items-center justify-center gap-2 py-2.5 rounded-xl text-xs font-semibold text-gray-300 bg-gray-900 border border-gray-800"
             >
-              <Shield className="w-4 h-4 text-blue-400" /> Portal Login
+              <Shield className="w-4 h-4 text-blue-400" /> Admin / Advertiser Login
             </Link>
-            <a
-              href="#macbook-display"
-              onClick={() => setMobileMenuOpen(false)}
-              className="flex items-center justify-center gap-2 py-2.5 rounded-xl text-xs font-bold text-white bg-blue-600 shadow-md shadow-blue-600/30"
-            >
-              <Sparkles className="w-4 h-4" /> Rent Your Spot Now
-            </a>
           </div>
         </div>
       )}
