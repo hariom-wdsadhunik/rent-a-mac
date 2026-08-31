@@ -6,8 +6,10 @@
 # testing
 /coverage
 
-# next.js
+# next.js & cloudflare opennext
 /.next/
+/.open-next/
+/.wrangler/
 /out/
 
 # production
@@ -27,8 +29,9 @@ yarn-error.log*
 .env*.local
 !.env.example
 
-# vercel
+# vercel & cloudflare secrets
 .vercel
+.dev.vars
 
 # typescript
 *.tsbuildinfo

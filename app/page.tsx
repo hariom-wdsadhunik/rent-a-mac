@@ -10,7 +10,8 @@ import { FAQ } from '@/components/public/FAQ';
 import { AdvertisingSlotData } from '@/lib/types';
 import { ArrowRight, Sparkles } from 'lucide-react';
 
-export const revalidate = 0; // Fresh inventory query
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 async function getInventorySlots(): Promise<AdvertisingSlotData[]> {
   try {
@@ -61,7 +62,7 @@ async function getInventorySlots(): Promise<AdvertisingSlotData[]> {
     console.error('Failed to query DB inventory, falling back to default slots:', e);
   }
 
-  // Fallback initial slots if DB is unseeded
+  // Fallback initial slots if DB is unseeded or during build-time
   return [
     {
       id: 'slot-1',
