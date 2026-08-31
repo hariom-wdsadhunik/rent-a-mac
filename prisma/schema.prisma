@@ -1,0 +1,111 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id            String        @id @default(uuid())
+  email         String        @unique
+  passwordHash  String
+  name          String
+  company       String?
+  role          String        @default("USER") // "USER" | "ADMIN"
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  rentals       Rental[]
+  adminActions  AdminAction[]
+
+  @@map("users")
+}
+
+model AdvertisingSlot {
+  id             String     @id @default(uuid())
+  name           String
+  slug           String     @unique
+  description    String
+  position       String     // e.g., "Screen Center", "Top Notch Banner", "Dock Right", "Trackpad Banner"
+  gridArea       String     // CSS position mapping
+  width          Int
+  height         Int
+  basePrice7Days Float
+  status         String     @default("AVAILABLE") // "AVAILABLE" | "PENDING" | "RESERVED" | "OCCUPIED" | "DISABLED"
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+  rentals        Rental[]
+
+  @@map("advertising_slots")
+}
+
+model Advertisement {
+  id        String   @id @default(uuid())
+  title     String
+  brandName String
+  targetUrl String
+  imageUrl  String
+  altText   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  rentals   Rental[]
+
+  @@map("advertisements")
+}
+
+model Rental {
+  id              String          @id @default(uuid())
+  userEmail       String
+  userName        String
+  companyName     String?
+  slotId          String
+  slot            AdvertisingSlot @relation(fields: [slotId], references: [id])
+  advertisementId String
+  advertisement   Advertisement   @relation(fields: [advertisementId], references: [id])
+  userId          String?
+  user            User?           @relation(fields: [userId], references: [id])
+  
+  durationDays    Int
+  startDate       DateTime
+  endDate         DateTime
+  totalAmount     Float
+  
+  status          String          @default("PENDING_PAYMENT") // "PENDING_PAYMENT" | "PENDING_REVIEW" | "ACTIVE" | "REJECTED" | "EXPIRED" | "CANCELLED"
+  rejectionReason String?
+  
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+  payment         Payment?
+
+  @@index([slotId, startDate, endDate])
+  @@index([status])
+  @@map("rentals")
+}
+
+model Payment {
+  id                    String   @id @default(uuid())
+  rentalId              String   @unique
+  rental                Rental   @relation(fields: [rentalId], references: [id], onDelete: Cascade)
+  stripeSessionId       String?  @unique
+  stripePaymentIntentId String?  @unique
+  amount                Float
+  currency              String   @default("usd")
+  status                String   @default("PENDING") // "PENDING" | "COMPLETED" | "FAILED" | "REFUNDED"
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  @@map("payments")
+}
+
+model AdminAction {
+  id        String   @id @default(uuid())
+  adminId   String
+  admin     User     @relation(fields: [adminId], references: [id])
+  action    String
+  targetId  String
+  details   String?
+  createdAt DateTime @default(now())
+
+  @@map("admin_actions")
+}
