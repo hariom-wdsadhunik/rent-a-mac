@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Sparkles, ArrowRight, ShieldCheck, Zap, BarChart2, Eye, Laptop } from 'lucide-react';
+import { Sparkles, ArrowRight, ShieldCheck, Zap, BarChart2, Laptop, Info } from 'lucide-react';
 
 export function Hero() {
   return (
@@ -10,20 +10,24 @@ export function Hero() {
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-blue-600/10 blur-[120px] rounded-full pointer-events-none" />
 
       <div className="max-w-5xl mx-auto px-4 text-center space-y-5 md:space-y-6 relative z-10">
-        {/* MOBILE VISITOR MODE HERO CALLOUT (<768px) */}
+        {/* ELEGANT MOBILE VISITOR MODE CALLOUT (<768px) */}
         <div className="block md:hidden">
-          <div className="p-3.5 rounded-2xl bg-gradient-to-r from-blue-950/80 via-indigo-950/70 to-gray-900 border border-blue-500/40 text-left space-y-2 shadow-lg">
+          <div className="p-4 rounded-2xl bg-gradient-to-r from-blue-950/90 via-indigo-950/80 to-gray-900 border border-blue-500/40 text-left space-y-2.5 shadow-xl">
             <div className="flex items-center gap-2">
-              <span className="p-1 rounded bg-blue-500/20 text-blue-400 border border-blue-500/30">
-                <Laptop className="w-3.5 h-3.5" />
+              <span className="p-1 rounded-lg bg-blue-500/20 text-blue-400 border border-blue-500/30">
+                <Laptop className="w-4 h-4" />
               </span>
-              <span className="text-xs font-bold text-white">
+              <span className="text-xs font-bold text-white tracking-tight">
                 You&apos;re viewing Rent-a-Mac in Visitor Mode.
               </span>
             </div>
-            <p className="text-[11px] text-gray-300 leading-snug">
-              Explore the MacBook outer lid &amp; discover available spots. Open Rent-a-Mac on a PC or laptop to rent.
+            <p className="text-xs text-gray-300 leading-relaxed">
+              Mobile is for exploring. The actual advertising workspace is designed for PC and laptop screens.
             </p>
+            <div className="pt-1 text-[11px] font-medium text-blue-300 flex items-center gap-1.5">
+              <Info className="w-3.5 h-3.5 text-blue-400 shrink-0" />
+              <span>Want to rent a spot? Open Rent-a-Mac on a PC or laptop.</span>
+            </div>
           </div>
         </div>
 
@@ -42,24 +46,20 @@ export function Hero() {
         </h1>
 
         {/* Supporting Copy */}
-        <p className="max-w-2xl mx-auto text-sm sm:text-lg text-gray-300 font-normal leading-relaxed">
-          Put your brand on the back of a virtual MacBook outer lid and let thousands of daily tech enthusiasts discover it. Claim high-visibility center billboards, top lid strips, or corner decals with transparent pricing.
+        <p className="max-w-2xl mx-auto text-xs sm:text-base md:text-lg text-gray-300 font-normal leading-relaxed">
+          <span className="block md:hidden">
+            Explore Rent-a-Mac on mobile. To choose and rent an advertising spot, open the site on a PC or laptop.
+          </span>
+          <span className="hidden md:block">
+            Put your brand on the back of a virtual MacBook outer lid and let thousands of daily tech enthusiasts discover it. Claim high-visibility center billboards, top lid strips, or corner decals with transparent pricing.
+          </span>
         </p>
 
-        {/* MOBILE CTA BUTTONS (<768px) */}
-        <div className="flex md:hidden flex-col gap-2.5 pt-1">
-          <a
-            href="#macbook-display"
-            className="w-full py-3 px-4 rounded-xl text-xs font-bold text-white bg-blue-600 hover:bg-blue-500 shadow-lg shadow-blue-600/30 flex items-center justify-center gap-2"
-          >
-            <Eye className="w-4 h-4" /> View the MacBook Outer Lid
-          </a>
-          <a
-            href="#how-it-works"
-            className="w-full py-3 px-4 rounded-xl text-xs font-semibold text-gray-300 bg-gray-900 border border-gray-800 flex items-center justify-center gap-2"
-          >
-            How Renting Works
-          </a>
+        {/* MOBILE CTA BUTTON (<768px) */}
+        <div className="flex md:hidden flex-col gap-2.5 pt-1 max-w-sm mx-auto">
+          <div className="w-full py-3.5 px-4 rounded-xl text-xs font-bold text-white bg-blue-600/90 border border-blue-500/50 shadow-lg shadow-blue-600/25 flex items-center justify-center gap-2 text-center">
+            <Laptop className="w-4 h-4 shrink-0" /> Open on a PC or laptop to rent
+          </div>
         </div>
 
         {/* DESKTOP CTA BUTTONS (>=768px) */}

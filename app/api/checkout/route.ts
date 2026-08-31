@@ -7,6 +7,19 @@ import { createPaymentCheckoutSession } from '@/lib/stripe';
 
 export async function POST(req: NextRequest) {
   try {
+    // 0. Server-side Security: Block Mobile Checkout Requests
+    const userAgent = req.headers.get('user-agent') || '';
+    const isMobileClient = /Mobile|Android|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
+    
+    if (isMobileClient) {
+      return NextResponse.json(
+        {
+          error: 'Mobile checkout is restricted. Please open Rent-a-Mac on a PC or laptop browser to complete your campaign rental.',
+        },
+        { status: 403 }
+      );
+    }
+
     const body = await req.json();
 
     // 1. Zod Input Validation
@@ -82,7 +95,7 @@ export async function POST(req: NextRequest) {
     });
 
     // 6. Create Stripe/Payment Session
-    const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://rent-a-mac.wdsadhunik.workers.dev';
     const checkoutSession = await createPaymentCheckoutSession({
       rentalId: rental.id,
       slotName: slot.name,

@@ -71,17 +71,17 @@ export function Navbar() {
         </div>
       </div>
 
-      {/* Mobile Drawer Overlay (Discovery Links Only) */}
+      {/* Mobile Drawer Overlay (Marketing & Information Links Only) */}
       {mobileMenuOpen && (
         <div className="md:hidden border-b border-gray-800 bg-gray-950 p-4 space-y-4 animate-in slide-in-from-top duration-200">
           <nav className="flex flex-col space-y-3 text-xs font-semibold text-gray-300">
-            <a
-              href="#macbook-display"
+            <Link
+              href="/"
               onClick={() => setMobileMenuOpen(false)}
               className="px-3 py-2 rounded-lg hover:bg-gray-900 hover:text-white"
             >
-              Explore MacBook Lid
-            </a>
+              Home
+            </Link>
             <a
               href="#how-it-works"
               onClick={() => setMobileMenuOpen(false)}
@@ -90,11 +90,11 @@ export function Navbar() {
               How It Works
             </a>
             <a
-              href="#spots-inventory"
+              href="#why-advertise"
               onClick={() => setMobileMenuOpen(false)}
               className="px-3 py-2 rounded-lg hover:bg-gray-900 hover:text-white"
             >
-              Available Spots
+              Why Advertise
             </a>
             <a
               href="#faq"

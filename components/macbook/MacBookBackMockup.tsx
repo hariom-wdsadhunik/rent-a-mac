@@ -1,9 +1,9 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import { AdvertisingSlotData } from '@/lib/types';
 import { AdSlotOverlay } from './AdSlotOverlay';
-import { Apple, Layers, Sparkles, Laptop, ShieldCheck } from 'lucide-react';
+import { Apple, Laptop } from 'lucide-react';
 
 interface MacBookBackMockupProps {
   slots: AdvertisingSlotData[];
@@ -11,9 +11,7 @@ interface MacBookBackMockupProps {
 }
 
 export function MacBookBackMockup({ slots, onSelectSlot }: MacBookBackMockupProps) {
-  const [activeMobileSlotId, setActiveMobileSlotId] = useState<string | null>(null);
-
-  // Map slots to lid zones
+  // Map slots to lid zones for desktop view
   const topLidSlot = slots.find((s) => s.slug === 'top-notch-bar') || slots[1];
   const centerLidSlot = slots.find((s) => s.slug === 'featured-center') || slots[0];
   const topLeftLidSlot = slots.find((s) => s.slug === 'side-left') || slots[4];
@@ -23,7 +21,7 @@ export function MacBookBackMockup({ slots, onSelectSlot }: MacBookBackMockupProp
 
   return (
     <div className="w-full max-w-4xl mx-auto select-none space-y-6">
-      {/* DESKTOP / LARGE TABLET VIEW COMPOSITION (>=768px) */}
+      {/* DESKTOP / LARGE TABLET INTERACTIVE MACBOOK BACK LID (>=768px) */}
       <div className="hidden md:flex flex-col items-center">
         <div className="relative mx-auto w-full aspect-[16/10] max-w-3xl rounded-[36px] bg-gradient-to-b from-gray-800 via-gray-900 to-gray-950 p-8 border-2 border-gray-700/80 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.9)] flex flex-col justify-between overflow-hidden group">
           {/* Metallic Aluminum Sheen */}
@@ -32,7 +30,7 @@ export function MacBookBackMockup({ slots, onSelectSlot }: MacBookBackMockupProp
           {/* Top Notch Camera Lip */}
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-36 h-2.5 bg-gray-950/80 rounded-b-lg border-b border-x border-gray-800 z-20" />
 
-          {/* Center Apple Logo */}
+          {/* Center Apple Logo Watermark */}
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-0 pointer-events-none opacity-20 group-hover:opacity-30 transition-opacity">
             <div className="p-6 rounded-full bg-gradient-to-b from-gray-700 to-gray-900 shadow-2xl border border-gray-600/30">
               <Apple className="w-16 h-16 text-gray-300" />
@@ -122,182 +120,53 @@ export function MacBookBackMockup({ slots, onSelectSlot }: MacBookBackMockupProp
         </div>
       </div>
 
-      {/* DEDICATED MOBILE VISITOR COMPOSITION (<768px) */}
-      <div className="block md:hidden space-y-4">
-        {/* Mobile Visual Aluminum MacBook Lid Showcase Graphic */}
-        <div className="relative w-full rounded-2xl bg-gradient-to-b from-gray-800 via-gray-900 to-gray-950 p-4 border border-gray-700/80 shadow-2xl space-y-3 overflow-hidden">
-          <div className="flex items-center justify-between border-b border-gray-800 pb-2">
-            <span className="text-[11px] font-bold text-white flex items-center gap-1.5">
-              <Laptop className="w-3.5 h-3.5 text-blue-400" /> MacBook Outer Lid Surface
-            </span>
-            <span className="text-[9px] font-mono text-gray-400">Visitor Preview</span>
-          </div>
-
-          {/* Lid Diagram Graphic with Highlighted Active Selection */}
-          <div className="relative h-44 rounded-xl bg-gray-950 border border-gray-800/80 p-3 flex flex-col justify-between overflow-hidden">
-            {/* Background Apple Logo Watermark */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-15 pointer-events-none">
-              <Apple className="w-14 h-14 text-gray-400" />
-            </div>
-
-            {/* Top Lid Bar Indicator */}
-            {topLidSlot && (
-              <div
-                onClick={() => {
-                  setActiveMobileSlotId(topLidSlot.id);
-                  onSelectSlot(topLidSlot);
-                }}
-                className={`p-1.5 rounded-lg border text-center transition-all cursor-pointer ${
-                  activeMobileSlotId === topLidSlot.id
-                    ? 'bg-blue-600/30 border-blue-400 text-white'
-                    : 'bg-gray-900/80 border-gray-800 text-gray-400 hover:border-gray-700'
-                }`}
-              >
-                <span className="text-[9px] font-mono font-bold block truncate">
-                  TOP STRIP: {topLidSlot.name} (${topLidSlot.basePrice7Days}/7d)
-                </span>
-              </div>
-            )}
-
-            {/* Middle Grid Indicators */}
-            <div className="grid grid-cols-12 gap-1.5 items-center my-auto">
-              <div className="col-span-3">
-                {topLeftLidSlot && (
-                  <div
-                    onClick={() => {
-                      setActiveMobileSlotId(topLeftLidSlot.id);
-                      onSelectSlot(topLeftLidSlot);
-                    }}
-                    className={`p-1 rounded-lg border text-center transition-all cursor-pointer ${
-                      activeMobileSlotId === topLeftLidSlot.id
-                        ? 'bg-blue-600/30 border-blue-400 text-white'
-                        : 'bg-gray-900/80 border-gray-800 text-gray-400'
-                    }`}
-                  >
-                    <span className="text-[8px] font-mono block truncate">L-Flank</span>
-                  </div>
-                )}
-              </div>
-
-              <div className="col-span-6">
-                {centerLidSlot && (
-                  <div
-                    onClick={() => {
-                      setActiveMobileSlotId(centerLidSlot.id);
-                      onSelectSlot(centerLidSlot);
-                    }}
-                    className={`p-2 rounded-xl border-2 text-center transition-all cursor-pointer ${
-                      activeMobileSlotId === centerLidSlot.id
-                        ? 'bg-indigo-600/40 border-indigo-400 text-white'
-                        : 'bg-indigo-950/60 border-indigo-500/40 text-indigo-200'
-                    }`}
-                  >
-                    <span className="text-[9px] font-bold block truncate">PRIME BILLBOARD</span>
-                    <span className="text-[8px] font-mono text-emerald-400 block">${centerLidSlot.basePrice7Days}/7d</span>
-                  </div>
-                )}
-              </div>
-
-              <div className="col-span-3">
-                {topRightLidSlot && (
-                  <div
-                    onClick={() => {
-                      setActiveMobileSlotId(topRightLidSlot.id);
-                      onSelectSlot(topRightLidSlot);
-                    }}
-                    className={`p-1 rounded-lg border text-center transition-all cursor-pointer ${
-                      activeMobileSlotId === topRightLidSlot.id
-                        ? 'bg-blue-600/30 border-blue-400 text-white'
-                        : 'bg-gray-900/80 border-gray-800 text-gray-400'
-                    }`}
-                  >
-                    <span className="text-[8px] font-mono block truncate">R-Flank</span>
-                  </div>
-                )}
-              </div>
-            </div>
-
-            {/* Bottom Badges Indicators */}
-            <div className="flex items-center justify-between gap-2">
-              {bottomLeftLidSlot && (
-                <div
-                  onClick={() => {
-                    setActiveMobileSlotId(bottomLeftLidSlot.id);
-                    onSelectSlot(bottomLeftLidSlot);
-                  }}
-                  className={`w-1/2 p-1.5 rounded-lg border text-center transition-all cursor-pointer ${
-                    activeMobileSlotId === bottomLeftLidSlot.id
-                      ? 'bg-blue-600/30 border-blue-400 text-white'
-                      : 'bg-gray-900/80 border-gray-800 text-gray-400'
-                  }`}
-                >
-                  <span className="text-[8px] font-mono block truncate">Bottom-L Badge</span>
-                </div>
-              )}
-              {bottomRightLidSlot && (
-                <div
-                  onClick={() => {
-                    setActiveMobileSlotId(bottomRightLidSlot.id);
-                    onSelectSlot(bottomRightLidSlot);
-                  }}
-                  className={`w-1/2 p-1.5 rounded-lg border text-center transition-all cursor-pointer ${
-                    activeMobileSlotId === bottomRightLidSlot.id
-                      ? 'bg-blue-600/30 border-blue-400 text-white'
-                      : 'bg-gray-900/80 border-gray-800 text-gray-400'
-                  }`}
-                >
-                  <span className="text-[8px] font-mono block truncate">Bottom-R Plate</span>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-
-        {/* Mobile Advertising Slot Navigator Cards */}
-        <div className="bg-gray-900/90 border border-gray-800 rounded-2xl p-4 space-y-3">
-          <div className="flex items-center justify-between">
+      {/* MOBILE STATIC PROMOTIONAL CONCEPT VISUAL (<768px) — NON-INTERACTIVE */}
+      <div className="block md:hidden">
+        <div className="relative w-full rounded-2xl bg-gradient-to-b from-gray-800 via-gray-900 to-gray-950 p-5 border border-gray-700/80 shadow-2xl space-y-3 pointer-events-none overflow-hidden">
+          <div className="flex items-center justify-between border-b border-gray-800/80 pb-2">
             <span className="text-xs font-bold text-white flex items-center gap-1.5">
-              <Layers className="w-3.5 h-3.5 text-blue-400" /> Mobile Slot Navigator
+              <Laptop className="w-3.5 h-3.5 text-blue-400" /> Rent-a-Mac Concept Preview
             </span>
-            <span className="text-[10px] text-gray-400 font-mono">Tap slot to inspect details</span>
+            <span className="text-[9px] font-mono text-gray-400">Static Visual Only</span>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
-            {slots.map((s) => {
-              const isSelected = activeMobileSlotId === s.id;
-              return (
-                <button
-                  key={s.id}
-                  onClick={() => {
-                    setActiveMobileSlotId(s.id);
-                    onSelectSlot(s);
-                  }}
-                  className={`p-3 rounded-xl text-left transition-all space-y-1.5 ${
-                    isSelected
-                      ? 'bg-blue-950/80 border-2 border-blue-500 text-white shadow-lg'
-                      : 'bg-gray-950 border border-gray-800 hover:border-gray-700 text-gray-300'
-                  }`}
-                >
-                  <div className="flex items-center justify-between">
-                    <span className="text-white font-bold text-[11px] truncate">{s.name}</span>
-                    <span
-                      className={`px-1.5 py-0.5 rounded text-[8px] font-bold uppercase ${
-                        s.status === 'OCCUPIED'
-                          ? 'bg-purple-500/20 text-purple-400 border border-purple-500/30'
-                          : 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
-                      }`}
-                    >
-                      {s.status}
-                    </span>
-                  </div>
-                  <div className="flex items-center justify-between text-[10px] text-gray-400">
-                    <span className="font-mono">Zone: {s.position}</span>
-                    <span className="font-mono text-emerald-400 font-bold">${s.basePrice7Days}/7d</span>
-                  </div>
-                </button>
-              );
-            })}
+          {/* Static Concept Graphic Showcase */}
+          <div className="relative h-48 rounded-xl bg-gray-950 border border-gray-800 p-4 flex flex-col justify-between overflow-hidden">
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-15">
+              <Apple className="w-16 h-16 text-gray-400" />
+            </div>
+
+            {/* Static Top Strip Concept */}
+            <div className="p-2 rounded-lg bg-blue-950/40 border border-blue-500/30 text-center">
+              <span className="text-[9px] font-mono font-bold text-blue-300 block">
+                TOP LID STRIP — BRANDING BANNER
+              </span>
+            </div>
+
+            {/* Static Center Concept */}
+            <div className="my-auto p-3 rounded-xl bg-indigo-950/60 border-2 border-indigo-500/50 text-center">
+              <span className="text-xs font-black text-white block uppercase tracking-wider">
+                PRIME CENTER BILLBOARD
+              </span>
+              <span className="text-[9px] font-mono text-indigo-300 block">
+                High-Visibility Brand Placement
+              </span>
+            </div>
+
+            {/* Static Bottom Badges Concept */}
+            <div className="flex items-center justify-between gap-2 text-[8px] font-mono text-gray-400">
+              <div className="w-1/2 p-1.5 rounded bg-gray-900 border border-gray-800 text-center">
+                BOTTOM-LEFT DECAL
+              </div>
+              <div className="w-1/2 p-1.5 rounded bg-gray-900 border border-gray-800 text-center">
+                BOTTOM-RIGHT PLATE
+              </div>
+            </div>
           </div>
+
+          <p className="text-[10px] text-gray-400 text-center italic font-mono pt-1">
+            Static concept preview. Open Rent-a-Mac on a PC or laptop for interactive slot selection and rental.
+          </p>
         </div>
       </div>
     </div>

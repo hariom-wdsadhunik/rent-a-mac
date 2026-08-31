@@ -2,7 +2,6 @@ import React from 'react';
 import { db } from '@/lib/db';
 import { Hero } from '@/components/public/Hero';
 import { MacBookMockup } from '@/components/macbook/MacBookMockup';
-import { VisitorModeBanner } from '@/components/public/VisitorModeBanner';
 import { HowItWorks } from '@/components/public/HowItWorks';
 import { SlotsGrid } from '@/components/public/SlotsGrid';
 import { PricingSection } from '@/components/public/PricingSection';
@@ -178,52 +177,59 @@ export default async function HomePage() {
       {/* 1. Hero Section */}
       <Hero />
 
-      {/* 2. Mobile Visitor Mode Intent Banner */}
-      <VisitorModeBanner />
-
-      {/* 3. Interactive MacBook Showcase Centerpiece */}
+      {/* 2. MacBook Outer Lid Showcase Centerpiece */}
       <section id="macbook-display" className="scroll-mt-20">
         <div className="text-center max-w-2xl mx-auto px-4 mb-4">
-          <span className="text-xs font-bold uppercase tracking-widest text-blue-400">Interactive Visual Showcase</span>
-          <h2 className="text-2xl sm:text-3xl font-black text-white mt-1">Click Any Advertising Slot To Inspect</h2>
-          <p className="text-xs text-gray-400 mt-1">Hover over slots for live availability preview &amp; price tiers</p>
+          <span className="text-xs font-bold uppercase tracking-widest text-blue-400">
+            <span className="hidden md:inline">Interactive Visual Showcase</span>
+            <span className="inline md:hidden">Rent-a-Mac Concept Preview</span>
+          </span>
+          <h2 className="text-2xl sm:text-3xl font-black text-white mt-1">
+            <span className="hidden md:inline">Click Any Advertising Slot To Inspect</span>
+            <span className="inline md:hidden">Rent-a-Mac Billboard Surface</span>
+          </h2>
+          <p className="text-xs text-gray-400 mt-1">
+            <span className="hidden md:inline">Hover over slots for live availability preview &amp; price tiers</span>
+            <span className="inline md:hidden">Open Rent-a-Mac on a PC or laptop for interactive slot selection and rental</span>
+          </p>
         </div>
         <MacBookMockup slots={slots} />
       </section>
 
-      {/* 4. How It Works */}
+      {/* 3. How It Works */}
       <HowItWorks />
 
-      {/* 5. Complete Inventory Grid (Mobile + Desktop Cards) */}
+      {/* 4. Complete Inventory Showcase */}
       <SlotsGrid slots={slots} />
 
-      {/* 6. Pricing & Duration Discounts */}
+      {/* 5. Pricing & Duration Discounts */}
       <PricingSection />
 
-      {/* 7. Why Advertise Here */}
+      {/* 6. Why Advertise Here */}
       <WhyAdvertise />
 
-      {/* 8. FAQ */}
+      {/* 7. FAQ */}
       <FAQ />
 
-      {/* 9. Final CTA Banner */}
+      {/* 8. Final CTA Banner */}
       <section className="max-w-5xl mx-auto px-4">
-        <div className="p-10 rounded-3xl bg-gradient-to-r from-blue-900/40 via-indigo-900/30 to-purple-900/40 border border-blue-500/30 text-center space-y-6 relative overflow-hidden shadow-2xl">
+        <div className="p-8 sm:p-10 rounded-3xl bg-gradient-to-r from-blue-900/40 via-indigo-900/30 to-purple-900/40 border border-blue-500/30 text-center space-y-5 sm:space-y-6 relative overflow-hidden shadow-2xl">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/20 text-blue-300 text-xs font-semibold">
             <Sparkles className="w-4 h-4" /> Ready to Launch Your Campaign?
           </div>
-          <h3 className="text-3xl sm:text-5xl font-black text-white tracking-tight">
+          <h3 className="text-2xl sm:text-5xl font-black text-white tracking-tight">
             Claim Your Spot on the Internet&apos;s MacBook
           </h3>
-          <p className="max-w-xl mx-auto text-sm text-gray-300">
+          <p className="max-w-xl mx-auto text-xs sm:text-sm text-gray-300">
             Join forward-thinking tech companies, indie developers, and creators displaying their brands to thousands of daily visitors.
           </p>
           <div>
             <a
               href="#macbook-display"
-              className="inline-flex items-center gap-2 px-8 py-4 rounded-xl text-sm font-bold text-white bg-blue-600 hover:bg-blue-500 shadow-xl shadow-blue-600/30 transition-all hover:scale-105"
+              className="inline-flex items-center gap-2 px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl text-xs sm:text-sm font-bold text-white bg-blue-600 hover:bg-blue-500 shadow-xl shadow-blue-600/30 transition-all hover:scale-105"
             >
-              Rent Your Spot Now <ArrowRight className="w-4 h-4" />
+              <span className="hidden md:inline">Rent Your Spot Now →</span>
+              <span className="inline md:hidden">Open on a PC or laptop to rent</span>
             </a>
           </div>
         </div>
