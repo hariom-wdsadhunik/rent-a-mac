@@ -13,19 +13,36 @@ async function main() {
 
   const admin = await prisma.user.upsert({
     where: { email: adminEmail },
-    update: { passwordHash, role: 'ADMIN' },
+    update: { passwordHash, role: 'ADMIN', status: 'ACTIVE' },
     create: {
       email: adminEmail,
       name: 'System Admin',
       passwordHash,
       role: 'ADMIN',
       company: 'Rent-a-Mac Inc.',
+      website: 'https://rent-a-mac.com',
+      status: 'ACTIVE',
     },
   });
 
   console.log(`✅ Admin user seeded: ${admin.email}`);
 
-  // 2. Seed Advertising Slots
+  // 2. Seed Sample Advertiser User
+  const advertiserUser = await prisma.user.upsert({
+    where: { email: 'alex@cloudscale.io' },
+    update: { status: 'ACTIVE' },
+    create: {
+      email: 'alex@cloudscale.io',
+      name: 'Alex Rivers',
+      passwordHash,
+      role: 'USER',
+      company: 'CloudScale AI Inc.',
+      website: 'https://cloudscale.io',
+      status: 'ACTIVE',
+    },
+  });
+
+  // 3. Seed Advertising Slots
   const slots = [
     {
       name: 'Featured Screen Center',
@@ -37,6 +54,8 @@ async function main() {
       height: 240,
       basePrice7Days: 149.00,
       status: 'OCCUPIED',
+      impressionsCount: 14200,
+      clicksCount: 380,
     },
     {
       name: 'Top Notch Banner',
@@ -48,6 +67,8 @@ async function main() {
       height: 48,
       basePrice7Days: 99.00,
       status: 'AVAILABLE',
+      impressionsCount: 8900,
+      clicksCount: 140,
     },
     {
       name: 'Dock Right Badge',
@@ -58,7 +79,9 @@ async function main() {
       width: 140,
       height: 140,
       basePrice7Days: 59.00,
-      status: 'AVAILABLE',
+      status: 'PENDING',
+      impressionsCount: 5200,
+      clicksCount: 95,
     },
     {
       name: 'Keyboard Trackpad Banner',
@@ -70,6 +93,8 @@ async function main() {
       height: 64,
       basePrice7Days: 79.00,
       status: 'AVAILABLE',
+      impressionsCount: 4100,
+      clicksCount: 62,
     },
     {
       name: 'Side Display Left',
@@ -81,6 +106,8 @@ async function main() {
       height: 260,
       basePrice7Days: 89.00,
       status: 'AVAILABLE',
+      impressionsCount: 6300,
+      clicksCount: 110,
     },
     {
       name: 'Side Display Right',
@@ -92,6 +119,8 @@ async function main() {
       height: 260,
       basePrice7Days: 89.00,
       status: 'AVAILABLE',
+      impressionsCount: 6100,
+      clicksCount: 105,
     },
   ];
 
@@ -107,7 +136,7 @@ async function main() {
     console.log(`✅ Slot created/updated: ${slot.name} ($${slot.basePrice7Days}/7d)`);
   }
 
-  // 3. Seed Sample Active Advertisement on Featured Screen Center
+  // 4. Seed Active & Approved Demo Rental on Featured Center Slot
   const centerSlotId = createdSlots['featured-center'];
   if (centerSlotId) {
     const existingRental = await prisma.rental.findFirst({
@@ -122,6 +151,7 @@ async function main() {
           targetUrl: 'https://example.com/cloudscale',
           imageUrl: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80',
           altText: 'CloudScale AI Logo & Banner',
+          status: 'APPROVED',
         },
       });
 
@@ -136,7 +166,7 @@ async function main() {
           companyName: 'CloudScale Inc.',
           slotId: centerSlotId,
           advertisementId: ad.id,
-          userId: admin.id,
+          userId: advertiserUser.id,
           durationDays: 30,
           startDate: today,
           endDate: nextMonth,
@@ -151,12 +181,76 @@ async function main() {
           amount: 549.00,
           currency: 'usd',
           status: 'COMPLETED',
+          provider: 'stripe',
           stripeSessionId: 'cs_demo_cloudscale_completed',
           stripePaymentIntentId: 'pi_demo_cloudscale_completed',
         },
       });
 
-      console.log('✅ Demo Active Advertisement created for Featured Center Slot!');
+      await prisma.adminAction.create({
+        data: {
+          adminId: admin.id,
+          action: 'RENTAL_APPROVED',
+          targetId: rental.id,
+          details: 'Approved active advertisement campaign for CloudScale AI on Featured Center slot.',
+        },
+      });
+
+      console.log('✅ Demo Active Rental & Payment created!');
+    }
+  }
+
+  // 5. Seed Pending Approval Demo Rental on Dock Right Slot
+  const dockSlotId = createdSlots['dock-right'];
+  if (dockSlotId) {
+    const existingPending = await prisma.rental.findFirst({
+      where: { slotId: dockSlotId, status: 'PENDING_REVIEW' },
+    });
+
+    if (!existingPending) {
+      const adPending = await prisma.advertisement.create({
+        data: {
+          title: 'DevPulse — Developer Productivity Analytics',
+          brandName: 'DevPulse',
+          targetUrl: 'https://example.com/devpulse',
+          imageUrl: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80',
+          altText: 'DevPulse App Icon',
+          status: 'PENDING_REVIEW',
+        },
+      });
+
+      const today = new Date();
+      const endPeriod = new Date();
+      endPeriod.setDate(today.getDate() + 14);
+
+      const pendingRental = await prisma.rental.create({
+        data: {
+          userName: 'Sarah Chen',
+          userEmail: 'sarah@devpulse.app',
+          companyName: 'DevPulse Labs',
+          slotId: dockSlotId,
+          advertisementId: adPending.id,
+          durationDays: 14,
+          startDate: today,
+          endDate: endPeriod,
+          totalAmount: 118.00,
+          status: 'PENDING_REVIEW',
+        },
+      });
+
+      await prisma.payment.create({
+        data: {
+          rentalId: pendingRental.id,
+          amount: 118.00,
+          currency: 'usd',
+          status: 'COMPLETED',
+          provider: 'stripe',
+          stripeSessionId: 'cs_demo_devpulse_pending',
+          stripePaymentIntentId: 'pi_demo_devpulse_pending',
+        },
+      });
+
+      console.log('✅ Demo Pending Review Rental & Payment created!');
     }
   }
 

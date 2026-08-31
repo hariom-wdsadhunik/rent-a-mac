@@ -23,9 +23,13 @@ async function getInventorySlots(): Promise<AdvertisingSlotData[]> {
             status: 'ACTIVE',
             startDate: { lte: new Date() },
             endDate: { gte: new Date() },
+            advertisement: {
+              status: 'APPROVED',
+            },
           },
           include: {
             advertisement: true,
+            payment: true,
           },
           take: 1,
         },
@@ -34,7 +38,34 @@ async function getInventorySlots(): Promise<AdvertisingSlotData[]> {
 
     if (slots.length > 0) {
       return slots.map((slot) => {
-        const activeRental = slot.rentals[0];
+        if (slot.status === 'DISABLED') {
+          return {
+            id: slot.id,
+            name: slot.name,
+            slug: slot.slug,
+            description: slot.description,
+            position: slot.position,
+            gridArea: slot.gridArea,
+            width: slot.width,
+            height: slot.height,
+            basePrice7Days: slot.basePrice7Days,
+            status: 'DISABLED',
+            activeAd: null,
+          };
+        }
+
+        const activeRental = slot.rentals.find(
+          (r) => r.payment?.status === 'COMPLETED' || r.payment === null
+        );
+
+        const activeAd = activeRental && activeRental.advertisement ? {
+          title: activeRental.advertisement.title,
+          brandName: activeRental.advertisement.brandName,
+          targetUrl: activeRental.advertisement.targetUrl,
+          imageUrl: activeRental.advertisement.imageUrl,
+          endDate: activeRental.endDate.toISOString().split('T')[0],
+        } : null;
+
         return {
           id: slot.id,
           name: slot.name,
@@ -45,16 +76,8 @@ async function getInventorySlots(): Promise<AdvertisingSlotData[]> {
           width: slot.width,
           height: slot.height,
           basePrice7Days: slot.basePrice7Days,
-          status: (activeRental ? 'OCCUPIED' : slot.status) as any,
-          activeAd: activeRental && activeRental.advertisement
-            ? {
-                title: activeRental.advertisement.title,
-                brandName: activeRental.advertisement.brandName,
-                targetUrl: activeRental.advertisement.targetUrl,
-                imageUrl: activeRental.advertisement.imageUrl,
-                endDate: activeRental.endDate.toISOString().split('T')[0],
-              }
-            : null,
+          status: (activeAd ? 'OCCUPIED' : slot.status) as any,
+          activeAd,
         };
       });
     }
@@ -62,7 +85,7 @@ async function getInventorySlots(): Promise<AdvertisingSlotData[]> {
     console.error('Failed to query DB inventory, falling back to default slots:', e);
   }
 
-  // Fallback initial slots if DB is unseeded or during build-time
+  // Fallback initial slots if DB is unseeded or during static build-time
   return [
     {
       id: 'slot-1',

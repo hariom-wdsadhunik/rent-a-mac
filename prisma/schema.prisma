@@ -13,7 +13,9 @@ model User {
   passwordHash  String
   name          String
   company       String?
+  website       String?
   role          String        @default("USER") // "USER" | "ADMIN"
+  status        String        @default("ACTIVE") // "ACTIVE" | "SUSPENDED"
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @updatedAt
   rentals       Rental[]
@@ -23,60 +25,67 @@ model User {
 }
 
 model AdvertisingSlot {
-  id             String     @id @default(uuid())
-  name           String
-  slug           String     @unique
-  description    String
-  position       String     // e.g., "Screen Center", "Top Notch Banner", "Dock Right", "Trackpad Banner"
-  gridArea       String     // CSS position mapping
-  width          Int
-  height         Int
-  basePrice7Days Float
-  status         String     @default("AVAILABLE") // "AVAILABLE" | "PENDING" | "RESERVED" | "OCCUPIED" | "DISABLED"
-  createdAt      DateTime   @default(now())
-  updatedAt      DateTime   @updatedAt
-  rentals        Rental[]
+  id               String           @id @default(uuid())
+  name             String
+  slug             String           @unique
+  description      String
+  position         String           // e.g., "Center Screen", "Top Bar", "Dock Right"
+  gridArea         String           // CSS grid placement identifier
+  width            Int
+  height           Int
+  basePrice7Days   Float
+  status           String           @default("AVAILABLE") // "AVAILABLE" | "PENDING" | "RESERVED" | "OCCUPIED" | "DISABLED"
+  impressionsCount Int              @default(0)
+  clicksCount      Int              @default(0)
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+  rentals          Rental[]
+  analyticsEvents  AnalyticsEvent[]
 
   @@map("advertising_slots")
 }
 
 model Advertisement {
-  id        String   @id @default(uuid())
-  title     String
-  brandName String
-  targetUrl String
-  imageUrl  String
-  altText   String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  rentals   Rental[]
+  id               String           @id @default(uuid())
+  title            String
+  brandName        String
+  targetUrl        String
+  imageUrl         String
+  altText          String?
+  status           String           @default("PENDING_REVIEW") // "PENDING_REVIEW" | "APPROVED" | "REJECTED" | "SUSPENDED" | "EXPIRED"
+  notes            String?
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+  rentals          Rental[]
+  analyticsEvents  AnalyticsEvent[]
 
   @@map("advertisements")
 }
 
 model Rental {
-  id              String          @id @default(uuid())
+  id              String           @id @default(uuid())
   userEmail       String
   userName        String
   companyName     String?
   slotId          String
-  slot            AdvertisingSlot @relation(fields: [slotId], references: [id])
+  slot            AdvertisingSlot  @relation(fields: [slotId], references: [id])
   advertisementId String
-  advertisement   Advertisement   @relation(fields: [advertisementId], references: [id])
+  advertisement   Advertisement    @relation(fields: [advertisementId], references: [id])
   userId          String?
-  user            User?           @relation(fields: [userId], references: [id])
+  user            User?            @relation(fields: [userId], references: [id])
   
   durationDays    Int
   startDate       DateTime
   endDate         DateTime
   totalAmount     Float
   
-  status          String          @default("PENDING_PAYMENT") // "PENDING_PAYMENT" | "PENDING_REVIEW" | "ACTIVE" | "REJECTED" | "EXPIRED" | "CANCELLED"
+  status          String           @default("PENDING_PAYMENT") // "PENDING_PAYMENT" | "PENDING_REVIEW" | "ACTIVE" | "REJECTED" | "SUSPENDED" | "EXPIRED" | "CANCELLED"
   rejectionReason String?
   
-  createdAt       DateTime        @default(now())
-  updatedAt       DateTime        @updatedAt
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
   payment         Payment?
+  analyticsEvents AnalyticsEvent[]
 
   @@index([slotId, startDate, endDate])
   @@index([status])
@@ -92,17 +101,35 @@ model Payment {
   amount                Float
   currency              String   @default("usd")
   status                String   @default("PENDING") // "PENDING" | "COMPLETED" | "FAILED" | "REFUNDED"
+  provider              String   @default("stripe")
   createdAt             DateTime @default(now())
   updatedAt             DateTime @updatedAt
 
   @@map("payments")
 }
 
+model AnalyticsEvent {
+  id              String           @id @default(uuid())
+  eventType       String           // "IMPRESSION" | "SLOT_CLICK" | "AD_CLICK" | "CHECKOUT_START" | "RENTAL_COMPLETE"
+  slotId          String?
+  slot            AdvertisingSlot? @relation(fields: [slotId], references: [id])
+  advertisementId String?
+  advertisement   Advertisement?   @relation(fields: [advertisementId], references: [id])
+  rentalId        String?
+  rental          Rental?          @relation(fields: [rentalId], references: [id])
+  metadata        String?
+  createdAt       DateTime         @default(now())
+
+  @@index([eventType])
+  @@index([createdAt])
+  @@map("analytics_events")
+}
+
 model AdminAction {
   id        String   @id @default(uuid())
   adminId   String
   admin     User     @relation(fields: [adminId], references: [id])
-  action    String
+  action    String   // e.g., "SLOT_CREATED", "AD_APPROVED", "RENTAL_SUSPENDED", "PRICE_CHANGED"
   targetId  String
   details   String?
   createdAt DateTime @default(now())
