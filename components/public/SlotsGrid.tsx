@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { AdvertisingSlotData } from '@/lib/types';
-import { Sparkles, ArrowUpRight } from 'lucide-react';
+import { Sparkles, ArrowUpRight, Laptop } from 'lucide-react';
 import { SlotInspectModal } from '../macbook/SlotInspectModal';
 
 interface SlotsGridProps {
@@ -13,13 +13,15 @@ export function SlotsGrid({ slots }: SlotsGridProps) {
   const [selectedSlot, setSelectedSlot] = useState<AdvertisingSlotData | null>(null);
 
   return (
-    <section id="spots-inventory" className="py-16 border-t border-gray-800/80">
+    <section id="spots-inventory" className="py-12 md:py-16 border-t border-gray-800/80">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 md:mb-10 gap-4">
           <div>
-            <h2 className="text-xs font-bold uppercase tracking-widest text-blue-400 mb-2">MacBook Outer Lid Inventory</h2>
-            <h3 className="text-3xl font-black text-white sm:text-4xl">Own a piece of the MacBook.</h3>
-            <p className="text-gray-400 text-sm mt-2">
+            <h2 className="text-xs font-bold uppercase tracking-widest text-blue-400 mb-1.5 md:mb-2">
+              MacBook Outer Lid Inventory
+            </h2>
+            <h3 className="text-2xl sm:text-4xl font-black text-white">Own a piece of the MacBook.</h3>
+            <p className="text-gray-400 text-xs sm:text-sm mt-1.5 md:mt-2">
               Inspect current availability, physical lid placement, dimensions, and pro-rated duration pricing.
             </p>
           </div>
@@ -30,7 +32,7 @@ export function SlotsGrid({ slots }: SlotsGridProps) {
         </div>
 
         {/* Inventory Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
           {slots.map((slot) => {
             const isAvailable = slot.status === 'AVAILABLE';
             const isOccupied = slot.status === 'OCCUPIED';
@@ -38,7 +40,7 @@ export function SlotsGrid({ slots }: SlotsGridProps) {
             return (
               <div
                 key={slot.id}
-                className="p-6 rounded-2xl bg-gray-900 border border-gray-800 hover:border-gray-700 transition-all flex flex-col justify-between group"
+                className="p-5 sm:p-6 rounded-2xl bg-gray-900 border border-gray-800 hover:border-gray-700 transition-all flex flex-col justify-between group"
               >
                 <div>
                   <div className="flex items-center justify-between mb-3">
@@ -58,12 +60,12 @@ export function SlotsGrid({ slots }: SlotsGridProps) {
                     </span>
                   </div>
 
-                  <h4 className="text-lg font-bold text-white mb-2 group-hover:text-blue-400 transition-colors">
+                  <h4 className="text-base sm:text-lg font-bold text-white mb-1.5 group-hover:text-blue-400 transition-colors">
                     {slot.name}
                   </h4>
                   <p className="text-xs text-gray-400 leading-relaxed mb-4">{slot.description}</p>
 
-                  <div className="flex items-center gap-4 text-xs text-gray-400 mb-6 py-2 px-3 rounded-lg bg-gray-950 border border-gray-800">
+                  <div className="flex items-center gap-4 text-xs text-gray-400 mb-5 py-2 px-3 rounded-lg bg-gray-950 border border-gray-800">
                     <div>
                       <span className="text-[10px] text-gray-500 block uppercase">Resolution</span>
                       <strong className="text-white">{slot.width}×{slot.height}px</strong>
@@ -94,7 +96,10 @@ export function SlotsGrid({ slots }: SlotsGridProps) {
                 <div className="pt-4 border-t border-gray-800/80 flex items-center justify-between">
                   <div className="text-xs">
                     <span className="text-gray-500 block text-[10px]">30-Day Rate</span>
-                    <span className="font-bold text-white">${(slot.basePrice7Days * (30/7) * 0.85).toFixed(0)} <span className="text-[10px] font-normal text-emerald-400">(15% off)</span></span>
+                    <span className="font-bold text-white">
+                      ${(slot.basePrice7Days * (30 / 7) * 0.85).toFixed(0)}{' '}
+                      <span className="text-[10px] font-normal text-emerald-400">(15% off)</span>
+                    </span>
                   </div>
 
                   <button
@@ -107,7 +112,12 @@ export function SlotsGrid({ slots }: SlotsGridProps) {
                   >
                     {isAvailable ? (
                       <>
-                        <Sparkles className="w-3.5 h-3.5" /> Rent Spot
+                        <span className="hidden md:inline-flex items-center gap-1">
+                          <Sparkles className="w-3.5 h-3.5" /> Rent Spot
+                        </span>
+                        <span className="inline-flex md:hidden items-center gap-1">
+                          <Laptop className="w-3.5 h-3.5" /> Rent on PC
+                        </span>
                       </>
                     ) : (
                       <>
@@ -122,10 +132,7 @@ export function SlotsGrid({ slots }: SlotsGridProps) {
         </div>
       </div>
 
-      <SlotInspectModal
-        slot={selectedSlot}
-        onClose={() => setSelectedSlot(null)}
-      />
+      <SlotInspectModal slot={selectedSlot} onClose={() => setSelectedSlot(null)} />
     </section>
   );
 }

@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import './globals.css';
 import { Navbar } from '@/components/public/Navbar';
 import { Footer } from '@/components/public/Footer';
@@ -18,13 +18,20 @@ export const metadata: Metadata = {
     title: "Rent-a-Mac — Rent a spot on the internet's MacBook",
     description: 'Rent advertising space on a virtual MacBook mockup. Put your brand in front of thousands of daily tech enthusiasts.',
     type: 'website',
-    url: 'https://rent-a-mac.vercel.app',
+    url: 'https://rent-a-mac.wdsadhunik.workers.dev',
   },
   twitter: {
     card: 'summary_large_image',
     title: "Rent-a-Mac — Internet's MacBook Advertising Platform",
     description: 'Claim your spot on the internet’s MacBook billboard.',
   },
+};
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
 };
 
 export default function RootLayout({
