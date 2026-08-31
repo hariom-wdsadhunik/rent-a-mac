@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { AdvertisingSlotData } from '@/lib/types';
-import { Sparkles, Calendar, ArrowUpRight, ShieldAlert } from 'lucide-react';
+import { Sparkles, ArrowUpRight } from 'lucide-react';
 import { SlotInspectModal } from '../macbook/SlotInspectModal';
 
 interface SlotsGridProps {
@@ -17,10 +17,10 @@ export function SlotsGrid({ slots }: SlotsGridProps) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
           <div>
-            <h2 className="text-xs font-bold uppercase tracking-widest text-blue-400 mb-2">Complete Inventory</h2>
-            <h3 className="text-3xl font-black text-white sm:text-4xl">Available Advertising Spots</h3>
+            <h2 className="text-xs font-bold uppercase tracking-widest text-blue-400 mb-2">MacBook Outer Lid Inventory</h2>
+            <h3 className="text-3xl font-black text-white sm:text-4xl">Own a piece of the MacBook.</h3>
             <p className="text-gray-400 text-sm mt-2">
-              Inspect current availability, slot dimensions, and pricing options.
+              Inspect current availability, physical lid placement, dimensions, and pro-rated duration pricing.
             </p>
           </div>
           <div className="flex items-center gap-2 text-xs text-gray-400">
@@ -43,7 +43,7 @@ export function SlotsGrid({ slots }: SlotsGridProps) {
                 <div>
                   <div className="flex items-center justify-between mb-3">
                     <span className="text-xs font-mono font-bold text-gray-400 px-2 py-0.5 rounded bg-gray-800 border border-gray-700">
-                      {slot.position}
+                      Lid Zone: {slot.position}
                     </span>
                     <span
                       className={`text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider ${
@@ -84,7 +84,7 @@ export function SlotsGrid({ slots }: SlotsGridProps) {
                         className="w-10 h-10 object-cover rounded-lg"
                       />
                       <div className="truncate">
-                        <span className="text-[10px] text-blue-400 font-semibold block">Currently Displaying</span>
+                        <span className="text-[10px] text-blue-400 font-semibold block">Active Lid Decal</span>
                         <strong className="text-white truncate block">{slot.activeAd.brandName}</strong>
                       </div>
                     </div>

@@ -13,7 +13,7 @@ export function Hero() {
         {/* Status Pill */}
         <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-semibold">
           <Sparkles className="w-3.5 h-3.5 animate-pulse" />
-          The Premier Internet Billboard Marketplace
+          The Premier Internet Laptop Lid Billboard Marketplace
         </div>
 
         {/* Primary Headline */}
@@ -26,8 +26,7 @@ export function Hero() {
 
         {/* Supporting Copy */}
         <p className="max-w-2xl mx-auto text-base sm:text-lg text-gray-300 font-normal leading-relaxed">
-          Put your brand, product, or project in front of everyone who visits. 
-          Claim high-visibility screen zones, top bar strips, dock badges, or palm-rest banners with transparent pricing.
+          Put your brand on the back of a virtual MacBook outer lid and let thousands of daily tech enthusiasts discover it. Claim high-visibility center billboards, top lid strips, or corner decals with transparent pricing.
         </p>
 
         {/* CTA Buttons */}
@@ -39,10 +38,10 @@ export function Hero() {
             Rent Your Spot <ArrowRight className="w-4 h-4" />
           </a>
           <a
-            href="#spots-inventory"
+            href="#macbook-display"
             className="w-full sm:w-auto px-8 py-4 rounded-xl text-sm font-bold text-gray-300 hover:text-white bg-gray-900 hover:bg-gray-800 border border-gray-800 transition-all flex items-center justify-center gap-2"
           >
-            Explore Available Spots
+            Explore the MacBook
           </a>
         </div>
 
@@ -50,7 +49,7 @@ export function Hero() {
         <div className="pt-8 grid grid-cols-1 sm:grid-cols-3 gap-4 text-left max-w-3xl mx-auto border-t border-gray-800/80 text-xs text-gray-400">
           <div className="flex items-center gap-2.5">
             <Zap className="w-4 h-4 text-blue-400 shrink-0" />
-            <span><strong>Instant Reservation</strong> & server-calculated rates</span>
+            <span><strong>Instant Outer Lid Booking</strong> &amp; server rates</span>
           </div>
           <div className="flex items-center gap-2.5">
             <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
@@ -58,7 +57,7 @@ export function Hero() {
           </div>
           <div className="flex items-center gap-2.5">
             <BarChart2 className="w-4 h-4 text-indigo-400 shrink-0" />
-            <span><strong>Impression Metrics</strong> & live analytics</span>
+            <span><strong>Impression Metrics</strong> &amp; live analytics</span>
           </div>
         </div>
       </div>

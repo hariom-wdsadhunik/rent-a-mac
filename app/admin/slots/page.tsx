@@ -5,16 +5,14 @@ import {
   Grid,
   Plus,
   Edit,
-  Eye,
   CheckCircle2,
-  Clock,
   Ban,
-  DollarSign,
   Search,
   Filter,
   X,
   History,
   Laptop,
+  Apple,
 } from 'lucide-react';
 
 interface SlotData {
@@ -78,7 +76,7 @@ export default function AdminSlotsPage() {
     name: '',
     slug: '',
     description: '',
-    position: 'Screen Center',
+    position: 'Lid Center',
     gridArea: 'center-screen',
     width: 300,
     height: 150,
@@ -170,7 +168,7 @@ export default function AdminSlotsPage() {
           name: '',
           slug: '',
           description: '',
-          position: 'Screen Center',
+          position: 'Lid Center',
           gridArea: 'center-screen',
           width: 300,
           height: 150,
@@ -214,7 +212,7 @@ export default function AdminSlotsPage() {
     return matchesSearch && matchesStatus;
   });
 
-  // Slot lookup helpers for Visual MacBook Display
+  // Slot lookup helpers for Visual MacBook Lid Display
   const getSlotBySlug = (slug: string) => slots.find((s) => s.slug === slug);
   const featuredCenter = getSlotBySlug('featured-center') || slots[0];
   const topNotch = getSlotBySlug('top-notch-bar') || slots[1];
@@ -247,7 +245,7 @@ export default function AdminSlotsPage() {
             <Grid className="w-6 h-6 text-indigo-400" /> Advertising Slot Management
           </h1>
           <p className="text-xs text-gray-400 mt-1">
-            Visual control layout &amp; Inventory pricing parameters for MacBook ad placement zones.
+            Visual control layout &amp; Inventory pricing parameters for MacBook outer lid decal zones.
           </p>
         </div>
         <button
@@ -267,42 +265,47 @@ export default function AdminSlotsPage() {
         </div>
       )}
 
-      {/* VISUAL MACBOOK SLOT MANAGER */}
+      {/* VISUAL MACBOOK BACK LID SLOT MANAGER */}
       <div className="bg-gray-900/90 border border-gray-800 rounded-2xl p-6 space-y-4">
         <div className="flex items-center justify-between border-b border-gray-800/80 pb-3">
           <h2 className="text-sm font-bold text-white flex items-center gap-2">
-            <Laptop className="w-4 h-4 text-blue-400" /> Interactive Visual Layout Manager
+            <Laptop className="w-4 h-4 text-blue-400" /> MacBook Outer Lid Visual Layout Manager
           </h2>
           <span className="text-[11px] text-gray-400 font-mono">
-            Click any zone on the MacBook mockup below to inspect or edit slot state
+            Click any decal zone on the aluminum lid below to inspect or edit slot state
           </span>
         </div>
 
-        {/* Visual MacBook Wireframe Grid */}
-        <div className="max-w-3xl mx-auto bg-gray-950 border border-gray-800 rounded-2xl p-4 md:p-6 space-y-4">
-          {/* Top Camera Bar Zone */}
+        {/* Visual MacBook Outer Lid Wireframe */}
+        <div className="relative max-w-3xl mx-auto bg-gradient-to-b from-gray-800 via-gray-900 to-gray-950 border-2 border-gray-700/80 rounded-[32px] p-6 space-y-4 shadow-2xl overflow-hidden">
+          {/* Apple Logo Watermark */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-10 pointer-events-none">
+            <Apple className="w-24 h-24 text-gray-400" />
+          </div>
+
+          {/* Top Lid Bar Zone */}
           {topNotch && (
             <div
               onClick={() => openEditModal(topNotch)}
-              className="p-2 rounded-lg bg-gray-900 border border-dashed border-gray-700 hover:border-blue-400 cursor-pointer transition-all flex items-center justify-between"
+              className="p-2 rounded-xl bg-gray-950/80 border border-dashed border-gray-700 hover:border-blue-400 cursor-pointer transition-all flex items-center justify-between"
             >
               <div className="flex items-center gap-2">
-                <span className="text-[10px] font-mono text-gray-400 font-bold">TOP BAR:</span>
+                <span className="text-[10px] font-mono text-gray-400 font-bold">TOP STRIP:</span>
                 <span className="text-xs font-bold text-white">{topNotch.name}</span>
-                <span className="text-[10px] font-mono text-gray-400">(${topNotch.basePrice7Days}/7d)</span>
+                <span className="text-[10px] font-mono text-emerald-400">(${topNotch.basePrice7Days}/7d)</span>
               </div>
               {getStatusBadge(topNotch.calculatedStatus || topNotch.status)}
             </div>
           )}
 
-          {/* Screen Content Grid */}
-          <div className="grid grid-cols-12 gap-3 min-h-[160px]">
+          {/* Middle Lid Content Grid */}
+          <div className="grid grid-cols-12 gap-3 min-h-[160px] items-center">
             {/* Left Flank */}
             <div className="col-span-3">
               {sideLeft ? (
                 <div
                   onClick={() => openEditModal(sideLeft)}
-                  className="h-full p-3 rounded-xl bg-gray-900 border border-dashed border-gray-700 hover:border-blue-400 cursor-pointer transition-all flex flex-col justify-between"
+                  className="h-full p-3 rounded-xl bg-gray-950/80 border border-dashed border-gray-700 hover:border-blue-400 cursor-pointer transition-all flex flex-col justify-between"
                 >
                   <span className="text-[10px] font-mono text-gray-400 font-bold block">LEFT FLANK</span>
                   <span className="text-xs font-bold text-white block">{sideLeft.name}</span>
@@ -315,15 +318,15 @@ export default function AdminSlotsPage() {
               )}
             </div>
 
-            {/* Featured Center Slot */}
+            {/* Featured Center Billboard */}
             <div className="col-span-6">
               {featuredCenter ? (
                 <div
                   onClick={() => openEditModal(featuredCenter)}
-                  className="h-full p-4 rounded-xl bg-gray-900/90 border-2 border-indigo-500/40 hover:border-indigo-400 cursor-pointer transition-all flex flex-col justify-between text-center"
+                  className="h-full p-4 rounded-xl bg-gray-950/90 border-2 border-indigo-500/50 hover:border-indigo-400 cursor-pointer transition-all flex flex-col justify-between text-center"
                 >
                   <span className="text-[10px] font-mono text-indigo-400 font-bold block uppercase tracking-wider">
-                    FEATURED SCREEN CENTER
+                    PRIME CENTER BILLBOARD
                   </span>
                   <div>
                     <span className="text-sm font-black text-white block">{featuredCenter.name}</span>
@@ -345,7 +348,7 @@ export default function AdminSlotsPage() {
               {sideRight ? (
                 <div
                   onClick={() => openEditModal(sideRight)}
-                  className="h-full p-3 rounded-xl bg-gray-900 border border-dashed border-gray-700 hover:border-blue-400 cursor-pointer transition-all flex flex-col justify-between"
+                  className="h-full p-3 rounded-xl bg-gray-950/80 border border-dashed border-gray-700 hover:border-blue-400 cursor-pointer transition-all flex flex-col justify-between"
                 >
                   <span className="text-[10px] font-mono text-gray-400 font-bold block">RIGHT FLANK</span>
                   <span className="text-xs font-bold text-white block">{sideRight.name}</span>
@@ -359,31 +362,34 @@ export default function AdminSlotsPage() {
             </div>
           </div>
 
-          {/* macOS Dock Slot */}
-          {dockRight && (
-            <div
-              onClick={() => openEditModal(dockRight)}
-              className="p-2.5 rounded-xl bg-gray-900 border border-dashed border-gray-700 hover:border-blue-400 cursor-pointer transition-all flex items-center justify-between"
-            >
-              <div className="flex items-center gap-2">
-                <span className="text-[10px] font-mono text-gray-400 font-bold">DOCK AREA:</span>
-                <span className="text-xs font-bold text-white">{dockRight.name}</span>
+          {/* Bottom Lid Badges */}
+          <div className="flex items-center justify-between gap-3">
+            {dockRight && (
+              <div
+                onClick={() => openEditModal(dockRight)}
+                className="w-1/2 p-2.5 rounded-xl bg-gray-950/80 border border-dashed border-gray-700 hover:border-blue-400 cursor-pointer transition-all flex items-center justify-between"
+              >
+                <div className="truncate">
+                  <span className="text-[9px] font-mono text-gray-400 font-bold block">BOTTOM LEFT</span>
+                  <span className="text-xs font-bold text-white truncate block">{dockRight.name}</span>
+                </div>
+                {getStatusBadge(dockRight.calculatedStatus || dockRight.status)}
               </div>
-              {getStatusBadge(dockRight.calculatedStatus || dockRight.status)}
-            </div>
-          )}
+            )}
 
-          {/* Trackpad Slot */}
-          {trackpad && (
-            <div
-              onClick={() => openEditModal(trackpad)}
-              className="p-2.5 rounded-xl bg-gray-900/60 border border-dashed border-gray-700 hover:border-blue-400 cursor-pointer transition-all flex items-center justify-between max-w-sm mx-auto"
-            >
-              <span className="text-[10px] font-mono text-gray-400 font-bold">TRACKPAD:</span>
-              <span className="text-xs font-bold text-white">{trackpad.name}</span>
-              {getStatusBadge(trackpad.calculatedStatus || trackpad.status)}
-            </div>
-          )}
+            {trackpad && (
+              <div
+                onClick={() => openEditModal(trackpad)}
+                className="w-1/2 p-2.5 rounded-xl bg-gray-950/80 border border-dashed border-gray-700 hover:border-blue-400 cursor-pointer transition-all flex items-center justify-between"
+              >
+                <div className="truncate">
+                  <span className="text-[9px] font-mono text-gray-400 font-bold block">BOTTOM RIGHT</span>
+                  <span className="text-xs font-bold text-white truncate block">{trackpad.name}</span>
+                </div>
+                {getStatusBadge(trackpad.calculatedStatus || trackpad.status)}
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
@@ -711,7 +717,7 @@ export default function AdminSlotsPage() {
                   <input
                     type="text"
                     required
-                    placeholder="e.g., Top Notch Banner 2"
+                    placeholder="e.g., Lid Top Strip 2"
                     value={createFormData.name}
                     onChange={(e) => setCreateFormData({ ...createFormData, name: e.target.value })}
                     className="w-full bg-gray-950 border border-gray-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-indigo-500"
@@ -722,7 +728,7 @@ export default function AdminSlotsPage() {
                   <input
                     type="text"
                     required
-                    placeholder="top-notch-bar-2"
+                    placeholder="lid-top-strip-2"
                     value={createFormData.slug}
                     onChange={(e) => setCreateFormData({ ...createFormData, slug: e.target.value })}
                     className="w-full bg-gray-950 border border-gray-800 rounded-xl px-3 py-2 font-mono text-white focus:outline-none focus:border-indigo-500"
@@ -734,7 +740,7 @@ export default function AdminSlotsPage() {
                 <label className="block font-semibold text-gray-300 mb-1">Description</label>
                 <textarea
                   rows={2}
-                  placeholder="Detailed description of visibility and target audience..."
+                  placeholder="Detailed description of outer lid visibility..."
                   value={createFormData.description}
                   onChange={(e) => setCreateFormData({ ...createFormData, description: e.target.value })}
                   className="w-full bg-gray-950 border border-gray-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-indigo-500"
